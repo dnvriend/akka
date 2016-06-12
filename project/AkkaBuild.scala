@@ -76,9 +76,10 @@ object AkkaBuild extends Build {
     osgi,
     parsing,
     persistence,
-    persistenceQuery,
-    persistenceShared,
     persistenceTck,
+    persistenceQuery,
+    persistenceQueryTck,
+    persistenceShared,
     protobuf,
     remote,
     remoteTests,
@@ -226,6 +227,17 @@ object AkkaBuild extends Build {
       streamTestkit % "compile;test->test")
   )
 
+  lazy val persistenceQueryTck = Project(
+    id = "akka-persistence-query-tck",
+    base = file("akka-persistence-query-tck"),
+    dependencies = Seq(
+      stream,
+      persistence % "compile;provided->provided;test->test",
+      persistenceQuery % "compile;provided->provided;test->test",
+      testkit % "compile;test->test",
+      streamTestkit % "compile;test->test")
+  )
+
   lazy val persistenceTck = Project(
     id = "akka-persistence-tck",
     base = file("akka-persistence-tck"),
@@ -353,7 +365,7 @@ object AkkaBuild extends Build {
       actor,
       testkit % "compile;test->test",
       remote % "compile;test->test", cluster, clusterMetrics, slf4j, agent, camel, osgi,
-      persistence % "compile;provided->provided;test->test", persistenceTck, persistenceQuery,
+      persistence % "compile;provided->provided;test->test", persistenceTck, persistenceQuery, persistenceQueryTck,
       typed % "compile;test->test", distributedData,
       stream, streamTestkit % "compile;test->test",
       http, httpSprayJson, httpJackson, httpXml,
